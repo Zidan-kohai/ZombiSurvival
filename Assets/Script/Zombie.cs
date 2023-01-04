@@ -11,7 +11,6 @@ public class Zombie : MonoBehaviour
     Animator animator;
     MovementAnimator movementAnimator;
     public bool death;
-    public bool died;
 
     void Start()
     {
@@ -27,14 +26,6 @@ public class Zombie : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (death){
-            if (!died)
-            {
-                Destroy(gameObject, 3);
-                died = true;
-            }
-            return;
-        }
         if (navMeshAgent != null)
         {
             navMeshAgent.SetDestination(player.transform.position);
@@ -45,12 +36,20 @@ public class Zombie : MonoBehaviour
     public void Kill()
     {   
         if (!death) {
-            death = true;
+            
+            Destroy(gameObject, 3);
+            Destroy(this);
+
+        }
+    }
+
+    private void OnDestroy()
+    {
+        death = true;
             Destroy(capsuleCollider);
             Destroy(movementAnimator);
             Destroy(navMeshAgent);
             animator.SetTrigger("died");
-            GetComponentInChildren<ParticleSystem>().Play();
-        }
+            GetComponentInChildren<ParticleSystem>().Play(); 
     }
 }

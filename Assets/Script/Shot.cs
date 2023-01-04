@@ -7,13 +7,11 @@ public class Shot : MonoBehaviour
     private LineRenderer lineRenderer;
     bool visible;
 
-    // Start is called before the first frame update
     void Awake()
     {
         lineRenderer = GetComponent<LineRenderer>();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         if (visible)
