@@ -9,7 +9,6 @@ public class Zombie : MonoBehaviour
     Player player;
     CapsuleCollider capsuleCollider;
     Animator animator;
-    MovementAnimator movementAnimator;
     public bool death;
 
     void Start()
@@ -20,13 +19,13 @@ public class Zombie : MonoBehaviour
 
         capsuleCollider = GetComponent<CapsuleCollider>();
         animator = GetComponentInChildren<Animator>();
-        movementAnimator = GetComponent<MovementAnimator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (navMeshAgent != null)
+        float distanse = Vector3.Distance(player.transform.position, gameObject.transform.position);
+        if (navMeshAgent != null && distanse > 1f)
         {
             navMeshAgent.SetDestination(player.transform.position);
             transform.rotation = Quaternion.LookRotation(navMeshAgent.velocity.normalized);
@@ -47,7 +46,6 @@ public class Zombie : MonoBehaviour
     {
         death = true;
             Destroy(capsuleCollider);
-            Destroy(movementAnimator);
             Destroy(navMeshAgent);
             animator.SetTrigger("died");
             GetComponentInChildren<ParticleSystem>().Play(); 

@@ -8,15 +8,15 @@ public class Player : MonoBehaviour
     NavMeshAgent navMeshAgent;
     public Cursor cursor;
     public Light FlashLight;
-    public float moveSpeed;
-
     public Shot shot;
     public Transform gunBarrel;
 
+    [SerializeField] private float moveSpeed;
+    public bool GameStop;
 
     void Start()
     {
-        navMeshAgent = GetComponentInChildren<NavMeshAgent>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.updateRotation = false;
     }
     
@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
         Vector3 forward = cursor.transform.position - transform.position;
         transform.rotation = Quaternion.LookRotation(new Vector3(forward.x, 0, forward.z));
 
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0) && !GameStop) {
             var from = gunBarrel.position;
             var target = cursor.transform.position;
             var to = new Vector3(target.x, from.y, target.z);
