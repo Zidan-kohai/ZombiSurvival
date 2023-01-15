@@ -8,13 +8,13 @@ public class PanelManager : MonoBehaviour
 {   
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject FallPanel;
-    [SerializeField] private GameObject pauseButton;
+    [SerializeField] private GameObject MainPanel;
     [SerializeField] private Player player;
     public void GamePause()
     {
         Time.timeScale = 0f;
         pausePanel.SetActive(true);
-        pauseButton.SetActive(false);
+        MainPanel.SetActive(false);
         player.GameStop = true;
         
     }
@@ -23,7 +23,16 @@ public class PanelManager : MonoBehaviour
     {
         Time.timeScale = 1.0f;
         pausePanel.SetActive(false);
-        pauseButton?.SetActive(true);
+        MainPanel.SetActive(true);
         player.GameStop = false;
+    }
+
+    public void GameFail()
+    {
+        Time.timeScale = 0f;
+        FallPanel.SetActive(true);
+        MainPanel.SetActive(false);
+        player.GameStop = true;
+
     }
 }

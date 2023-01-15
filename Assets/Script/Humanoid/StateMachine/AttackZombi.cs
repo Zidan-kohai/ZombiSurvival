@@ -5,11 +5,14 @@ using UnityEngine;
 public class AttackZombi : StateMachineBehaviour
 {
 
-    private Transform player;
+    private GameObject player;
     private GameObject Zombiself;
+    [SerializeField] private int _damage;
+    [SerializeField] private float _animationTime;
+    private float _currentTime;
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player = GameObject.FindGameObjectWithTag("Player").gameObject.transform.Find("Player");
+        player = GameObject.FindGameObjectWithTag("Player").transform.Find("Player").gameObject;
         Zombiself = animator.gameObject;
     }
 
@@ -22,11 +25,21 @@ public class AttackZombi : StateMachineBehaviour
             animator.SetFloat("speed", 1f);
         }
         Zombiself.transform.LookAt(player.transform.position);
+        if (_currentTime > _animationTime)
+        {
+            player.GetComponentInChildren<Player>().GetDamage(_damage);
+            _currentTime = 0f;
+        }
+        else
+        {
+            _currentTime += Time.deltaTime;
+        }
+        
     }
-
+        
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-
+        
     }
 
     override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

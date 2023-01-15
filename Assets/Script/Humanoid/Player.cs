@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -12,15 +13,18 @@ public class Player : MonoBehaviour
     public Transform gunBarrel;
 
     [SerializeField] private float moveSpeed;
+    [SerializeField] private int _helth = 100;
     public bool GameStop;
+    [SerializeField] PanelManager panelManager;
 
-    void Start()
+    public Text Helth;
+    private void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.updateRotation = false;
     }
     
-    void Update()
+    private void Update()
     {
         Vector3 dir = Vector3.zero;
         dir.x = Input.GetAxis("Horizontal");
@@ -54,11 +58,21 @@ public class Player : MonoBehaviour
         FlashLightTurnOn();
     }
 
-    void FlashLightTurnOn()
+    private void FlashLightTurnOn()
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
             FlashLight.enabled = FlashLight.enabled == true ? false : true;
+        }
+    }
+
+    public void GetDamage(int damage)
+    {
+        _helth -= damage;
+        Helth.text = _helth.ToString();
+        if(_helth < 0)
+        {
+            panelManager.GameFail();
         }
     }
 }
