@@ -70,7 +70,7 @@ public class Player : MonoBehaviour
     {
         _helth -= damage;
         Helth.text = _helth.ToString();
-        if(_helth < 0)
+        if(_helth <= 0)
         {
             panelManager.GameFail();
         }
