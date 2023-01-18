@@ -5,13 +5,15 @@ using UnityEngine.AI;
 
 public class idlePlayer : StateMachineBehaviour
 {
+    private MobileController joystick;
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<MobileController>();
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        if(joystick.Horizontal() != 0 || joystick.Vertical() != 0)
         {
             animator.SetFloat("speed", 1f);
         }

@@ -18,42 +18,30 @@ public class Player : MonoBehaviour
     [SerializeField] PanelManager panelManager;
 
     public Text Helth;
+    
+    private MobileController joystick;
     private void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.updateRotation = false;
+        joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<MobileController>();
     }
     
     private void Update()
     {
         Vector3 dir = Vector3.zero;
-        dir.x = Input.GetAxis("Horizontal");
-        dir.z = Input.GetAxis("Vertical");
+        dir.x = joystick.Horizontal();
+        dir.z = joystick.Vertical();
         navMeshAgent.velocity = -dir.normalized * moveSpeed;
         
         Vector3 forward = cursor.transform.position - transform.position;
-        transform.rotation = Quaternion.LookRotation(new Vector3(forward.x, 0, forward.z));
-
-        if (Input.GetMouseButtonDown(0) && !GameStop) {
-            var from = gunBarrel.position;
-            var target = cursor.transform.position;
-            var to = new Vector3(target.x, from.y, target.z);
-
-            var direction = (to - from).normalized;
-            RaycastHit hit;
-            if (Physics.Raycast(from, direction, out hit, 1000)){
-                    if (hit.transform != null) {
-                        var zombie = hit.transform.GetComponent<Zombie>();
-                        if (zombie != null)
-                            zombie.Kill();
-                    }
-                to = new Vector3(hit.point.x, from.y, hit.point.z);
-            }
-            else
-                to = from + direction * 100;
-
-            shot.Show(from, to);
+        if(Vector3.Angle(Vector3.forward, dir) > 1f || Vector3.Angle(Vector3.forward, dir) == 0f)
+        {
+            Vector3 direct = Vector3.RotateTowards(transform.forward, dir, moveSpeed, 0.0f);
+            transform.rotation = Quaternion.LookRotation(direct);
         }
+
+        
 
         FlashLightTurnOn();
     }
@@ -74,5 +62,29 @@ public class Player : MonoBehaviour
         {
             panelManager.GameFail();
         }
+    }
+
+    public void Shot()
+    {
+        var from = gunBarrel.position;
+        var target = cursor.transform.position;
+        var to = new Vector3(target.x, from.y, target.z);
+
+        var direction = (to - from).normalized;
+        RaycastHit hit;
+        if (Physics.Raycast(from, direction, out hit, 1000))
+        {
+            if (hit.transform != null)
+            {
+                var zombie = hit.transform.GetComponent<Zombie>();
+                if (zombie != null)
+                    zombie.Kill();
+            }
+            to = new Vector3(hit.point.x, from.y, hit.point.z);
+        }
+        else
+            to = from + direction * 100;
+
+        shot.Show(from, to);
     }
 }
