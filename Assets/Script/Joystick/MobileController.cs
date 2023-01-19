@@ -31,7 +31,6 @@ public class MobileController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         {
             pos.x = (pos.x / JoystickBG.rectTransform.sizeDelta.x);
             pos.y = (pos.y / JoystickBG.rectTransform.sizeDelta.x);
-            Debug.Log(pos);
             inputVector = new Vector2(pos.x, pos.y);
             inputVector = (inputVector.magnitude > 1.0f) ? inputVector.normalized : inputVector;
 

@@ -7,15 +7,17 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     NavMeshAgent navMeshAgent;
-    public Cursor cursor;
     public Light FlashLight;
     public Shot shot;
     public Transform gunBarrel;
-
+    [SerializeField] private float timeToNextShoot;
+    [SerializeField] private float currentTimeAfterShoot;
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float rotateSpeed;
     [SerializeField] private int _helth = 100;
     public bool GameStop;
     [SerializeField] PanelManager panelManager;
+    [SerializeField] private Animator playerAnim;
 
     public Text Helth;
     
@@ -34,25 +36,16 @@ public class Player : MonoBehaviour
         dir.z = joystick.Vertical();
         navMeshAgent.velocity = -dir.normalized * moveSpeed;
         
-        Vector3 forward = cursor.transform.position - transform.position;
         if(Vector3.Angle(Vector3.forward, dir) > 1f || Vector3.Angle(Vector3.forward, dir) == 0f)
-        {
-            Vector3 direct = Vector3.RotateTowards(transform.forward, dir, moveSpeed, 0.0f);
+        {   
+            Vector3 direct = Vector3.RotateTowards(transform.forward, -dir, rotateSpeed, 0.0f);
             transform.rotation = Quaternion.LookRotation(direct);
         }
-
-        
-
-        FlashLightTurnOn();
+        currentTimeAfterShoot += Time.deltaTime;
     }
 
-    private void FlashLightTurnOn()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            FlashLight.enabled = FlashLight.enabled == true ? false : true;
-        }
-    }
+    
+    
 
     public void GetDamage(int damage)
     {
@@ -66,25 +59,31 @@ public class Player : MonoBehaviour
 
     public void Shot()
     {
-        var from = gunBarrel.position;
-        var target = cursor.transform.position;
-        var to = new Vector3(target.x, from.y, target.z);
-
-        var direction = (to - from).normalized;
-        RaycastHit hit;
-        if (Physics.Raycast(from, direction, out hit, 1000))
+        if (currentTimeAfterShoot > timeToNextShoot)
         {
-            if (hit.transform != null)
-            {
-                var zombie = hit.transform.GetComponent<Zombie>();
-                if (zombie != null)
-                    zombie.Kill();
-            }
-            to = new Vector3(hit.point.x, from.y, hit.point.z);
-        }
-        else
-            to = from + direction * 100;
+            var from = gunBarrel.position;
+            Vector3 to = new Vector3();
 
-        shot.Show(from, to);
+            var direction = transform.forward;
+            RaycastHit hit;
+            if (Physics.Raycast(from, direction, out hit, 1000))
+            {
+                if (hit.transform != null)
+                {
+                    var zombie = hit.transform.GetComponent<Zombie>();
+                    if (zombie != null)
+                        zombie.Kill();
+                }
+                to = new Vector3(hit.point.x, from.y, hit.point.z);
+            }
+            else
+                to = from + direction * 100;
+
+            shot.Show(from, to);
+            playerAnim.Play("Shoot");
+            currentTimeAfterShoot = 0;
+        }
     }
+
+    public void FlashLightTurnOn() => FlashLight.enabled = FlashLight.enabled == true ? false : true;
 }
