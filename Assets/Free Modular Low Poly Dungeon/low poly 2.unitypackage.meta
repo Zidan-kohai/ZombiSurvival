@@ -1,9 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream
 <<<<<<<< Updated upstream:Assets/Free Modular Low Poly Dungeon/low poly 2.unitypackage.meta
 guid: 008f6cbd3f2050b479d75d0f0326e55c
 ========
 guid: 6f07f7ad451236147a77191e217ef58e
 >>>>>>>> Stashed changes:Assets/Free Modular Low Poly Dungeon/Instagram.url.meta
+=======
+guid: 008f6cbd3f2050b479d75d0f0326e55c
+>>>>>>> Stashed changes
 DefaultImporter:
   externalObjects: {}
   userData: 
