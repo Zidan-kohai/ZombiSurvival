@@ -8,7 +8,7 @@ public class runPlayer : StateMachineBehaviour
     private MobileController joystick;
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<MobileController>();
+        joystick = GameObject.FindGameObjectWithTag("MoveJoystick").GetComponent<MobileController>();
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

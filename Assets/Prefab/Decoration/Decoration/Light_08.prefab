@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7701757425166176536}
   - component: {fileID: 5544948173787701597}
-  - component: {fileID: 5366077705578311339}
   m_Layer: 0
   m_Name: fireLight
   m_TagString: Untagged
@@ -84,10 +83,10 @@ Light:
     serializedVersion: 2
     m_Bits: 2147483647
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 2
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
@@ -95,87 +94,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &5366077705578311339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361861296475498800}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45a5fb5f9284ef34980b6cd2b43c7b82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _lightIntensity:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0.08321464
-      outSlope: 0.08321464
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 1
-    - serializedVersion: 3
-      time: 1.2623942
-      value: 1.1104462
-      inSlope: 0.07305769
-      outSlope: 0.07305769
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.5977614
-      outWeight: 0.61641794
-    - serializedVersion: 3
-      time: 2.3175697
-      value: 1.0506297
-      inSlope: 0.02044318
-      outSlope: 0.02044318
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.40012592
-      outWeight: 0.54379445
-    - serializedVersion: 3
-      time: 3.3961368
-      value: 1.1722672
-      inSlope: 0.14365442
-      outSlope: 0.14365442
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.6063986
-    - serializedVersion: 3
-      time: 5.5053306
-      value: 1.1973432
-      inSlope: -0.06381717
-      outSlope: -0.06381717
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.4310748
-      outWeight: 0.4131479
-    - serializedVersion: 3
-      time: 7.077463
-      value: 1.1029867
-      inSlope: 0.1493188
-      outSlope: 0.1493188
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.4016956
-    - serializedVersion: 3
-      time: 9.1289215
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &4424669907963314428
 GameObject:
   m_ObjectHideFlags: 0

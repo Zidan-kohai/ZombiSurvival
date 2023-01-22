@@ -21,25 +21,35 @@ public class Player : MonoBehaviour
 
     public Text Helth;
     
-    private MobileController joystick;
+    private MobileController Movejoystick;
+    private MobileController Rotatejoystick;
     private void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.updateRotation = false;
-        joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<MobileController>();
+        Movejoystick = GameObject.FindGameObjectWithTag("MoveJoystick").GetComponent<MobileController>();
+        Rotatejoystick = GameObject.FindGameObjectWithTag("RotateJoystick").GetComponent<MobileController>();
     }
     
     private void Update()
     {
+        Vector3 move = Vector3.zero;
+        move.x = Movejoystick.Horizontal();
+        move.z = Movejoystick.Vertical();
+        navMeshAgent.velocity = -move.normalized * moveSpeed;
+
         Vector3 dir = Vector3.zero;
-        dir.x = joystick.Horizontal();
-        dir.z = joystick.Vertical();
-        navMeshAgent.velocity = -dir.normalized * moveSpeed;
-        
+        dir.x = Rotatejoystick.Horizontal();
+        dir.z = Rotatejoystick.Vertical();
+
         if(Vector3.Angle(Vector3.forward, dir) > 1f || Vector3.Angle(Vector3.forward, dir) == 0f)
         {   
             Vector3 direct = Vector3.RotateTowards(transform.forward, -dir, rotateSpeed, 0.0f);
             transform.rotation = Quaternion.LookRotation(direct);
+            if(dir.magnitude > 0.5f)
+            {
+                Shot();
+            }
         }
         currentTimeAfterShoot += Time.deltaTime;
     }
