@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotateSpeed;
     [SerializeField] private int _helth = 100;
+    [SerializeField] private int damage;
     public bool GameStop;
     [SerializeField] PanelManager panelManager;
     [SerializeField] private Animator playerAnim;
@@ -82,7 +83,7 @@ public class Player : MonoBehaviour
                 {
                     var zombie = hit.transform.GetComponent<Zombie>();
                     if (zombie != null)
-                        zombie.Kill();
+                        zombie.GetDamage(damage);
                 }
                 to = new Vector3(hit.point.x, from.y, hit.point.z);
             }

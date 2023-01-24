@@ -6,6 +6,7 @@ public class Spawner : MonoBehaviour
 {
     public float deltaTime;
     public GameObject zombie;
+    public ParticleSystem spawnEffect;
     void Start()
     {
         InvokeRepeating("Spawn", 2f, deltaTime);
@@ -13,6 +14,7 @@ public class Spawner : MonoBehaviour
 
     void Spawn()
     {
+        spawnEffect.Play();
         Instantiate(zombie,transform.position,transform.rotation);
     }
 }

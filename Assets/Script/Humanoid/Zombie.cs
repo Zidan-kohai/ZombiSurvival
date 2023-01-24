@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Zombie : MonoBehaviour
 {
@@ -10,15 +12,17 @@ public class Zombie : MonoBehaviour
     CapsuleCollider capsuleCollider;
     Animator animator;
     public bool death;
+    [SerializeField] private float health;
+    [SerializeField] private Slider HealthBar;
 
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         player = FindObjectOfType<Player>();    
         navMeshAgent.updateRotation = false;
-
         capsuleCollider = GetComponent<CapsuleCollider>();
         animator = GetComponentInChildren<Animator>();
+        HealthBar.maxValue = health;
     }
 
     // Update is called once per frame
@@ -32,19 +36,21 @@ public class Zombie : MonoBehaviour
         }
     }
 
-    public void Kill()
-    {   
-        if (!death) {
+    public void GetDamage(int damage)
+    {
+        health -= damage;
+        if (!death && health <= 0) {
             
             Destroy(gameObject, 3);
+            Destroy(HealthBar.gameObject);
             Destroy(this);
-
         }
+        HealthBar.value = health; 
     }
 
     private void OnDestroy()
     {
-        death = true;
+            death = true;
             Destroy(capsuleCollider);
             Destroy(navMeshAgent);
             animator.SetTrigger("died");
