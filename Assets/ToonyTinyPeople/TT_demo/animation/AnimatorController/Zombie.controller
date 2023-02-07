@@ -41,7 +41,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damage: 5
-  _animationTime: 1.1
+  _animationTime: 0.7
 --- !u!1101 &-7846716068789101127
 AnimatorStateTransition:
   m_ObjectHideFlags: 1

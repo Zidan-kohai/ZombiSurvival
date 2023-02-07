@@ -5,14 +5,15 @@ using UnityEngine.AI;
 
 public class runPlayer : StateMachineBehaviour
 {
+    NavMeshAgent playerNavMesh;
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-
+        playerNavMesh = animator.GetComponent<NavMeshAgent>();
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+        if (playerNavMesh.velocity.y == 0 && playerNavMesh.velocity.x == 0)
         {
             animator.SetFloat("speed", 0f);
         }

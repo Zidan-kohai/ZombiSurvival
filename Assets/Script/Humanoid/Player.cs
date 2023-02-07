@@ -2,22 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     NavMeshAgent navMeshAgent;
     public Cursor cursor;
-    public Light FlashLight;
+    //public Light FlashLight;
     public Shot shot;
     public Transform gunBarrel;
 
     [SerializeField] private float moveSpeed;
     [SerializeField] private int _helth = 100;
+    [SerializeField] private PanelManager panelManager;
+    [SerializeField] private float TimeToSecondShoot;
+    private float TimeFromLastShoot = 0;
     public bool GameStop;
-    [SerializeField] PanelManager panelManager;
 
-    public Text Helth;
     private void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -26,15 +26,16 @@ public class Player : MonoBehaviour
     
     private void Update()
     {
-        Vector3 dir = Vector3.zero;
-        dir.x = Input.GetAxis("Horizontal");
-        dir.z = Input.GetAxis("Vertical");
-        navMeshAgent.velocity = -dir.normalized * moveSpeed;
-        
+        TimeFromLastShoot += Time.deltaTime;
         Vector3 forward = cursor.transform.position - transform.position;
         transform.rotation = Quaternion.LookRotation(new Vector3(forward.x, 0, forward.z));
+        if (Input.GetMouseButtonDown(1))
+        {
+            navMeshAgent.SetDestination(cursor.transform.position);
+        }
 
-        if (Input.GetMouseButtonDown(0) && !GameStop) {
+        if (Input.GetMouseButtonDown(0) && !GameStop
+            && TimeToSecondShoot < TimeFromLastShoot) {
             var from = gunBarrel.position;
             var target = cursor.transform.position;
             var to = new Vector3(target.x, from.y, target.z);
@@ -53,23 +54,24 @@ public class Player : MonoBehaviour
                 to = from + direction * 100;
 
             shot.Show(from, to);
+            TimeFromLastShoot = 0f;
         }
 
-        FlashLightTurnOn();
+        //FlashLightTurnOn();
     }
 
-    private void FlashLightTurnOn()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            FlashLight.enabled = FlashLight.enabled == true ? false : true;
-        }
-    }
+    //private void FlashLightTurnOn()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.F))
+    //    {
+    //        FlashLight.enabled = FlashLight.enabled == true ? false : true;
+    //    }
+    //}
 
     public void GetDamage(int damage)
     {
         _helth -= damage;
-        Helth.text = _helth.ToString();
+        panelManager.Helth.text = _helth.ToString();
         if(_helth <= 0)
         {
             panelManager.GameFail();

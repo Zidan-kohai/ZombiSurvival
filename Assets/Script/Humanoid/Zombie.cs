@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,10 +6,12 @@ using UnityEngine.AI;
 
 public class Zombie : MonoBehaviour
 {
-    NavMeshAgent navMeshAgent;
-    Player player;
-    CapsuleCollider capsuleCollider;
-    Animator animator;
+    private PanelManager panelManager;
+    private NavMeshAgent navMeshAgent;
+    private CapsuleCollider capsuleCollider;
+    private GameObject money;
+    private Player player;
+    private Animator animator;
     public bool death;
 
     void Start()
@@ -19,9 +22,10 @@ public class Zombie : MonoBehaviour
 
         capsuleCollider = GetComponent<CapsuleCollider>();
         animator = GetComponentInChildren<Animator>();
+        panelManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<PanelManager>();
+        money = transform.Find("Money").gameObject;
     }
 
-    // Update is called once per frame
     void Update()
     {
         float distanse = Vector3.Distance(player.transform.position, gameObject.transform.position);
@@ -35,10 +39,12 @@ public class Zombie : MonoBehaviour
     public void Kill()
     {   
         if (!death) {
-            
+            int f = Convert.ToInt32(panelManager.CountKill.text);
+            f++;
+            panelManager.CountKill.text = f.ToString();
             Destroy(gameObject, 3);
+            money.SetActive(true);
             Destroy(this);
-
         }
     }
 

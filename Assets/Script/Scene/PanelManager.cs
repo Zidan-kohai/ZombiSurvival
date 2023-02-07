@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class PanelManager : MonoBehaviour
 {   
@@ -10,6 +11,10 @@ public class PanelManager : MonoBehaviour
     [SerializeField] private GameObject FallPanel;
     [SerializeField] private GameObject MainPanel;
     [SerializeField] private Player player;
+
+    public Text Helth;
+    public Text CountKill;
+    public Text CountMoney;
     public void GamePause()
     {
         Time.timeScale = 0f;
