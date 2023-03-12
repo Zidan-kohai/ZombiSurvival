@@ -7,17 +7,14 @@ public class PlayerCamera : MonoBehaviour
     Player player;
     Vector3 offset;
 
-    // Start is called before the first frame update
     void Start()
     {
         player = FindObjectOfType<Player>();
         offset = transform.position - player.transform.position;
     }
     
-    // Update is called once per frame
     void LateUpdate()
     {
         transform.position = player.transform.position + offset;
-        //transform.eulerAngles = new Vector3(transform.rotation.x, player.transform.localRotation.y, transform.rotation.z);
     }
 }

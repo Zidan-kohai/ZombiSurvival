@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,6 @@ public class Player : MonoBehaviour
 {
     NavMeshAgent navMeshAgent;
     public Cursor cursor;
-    //public Light FlashLight;
     public Shot shot;
     public Transform gunBarrel;
 
@@ -16,10 +16,12 @@ public class Player : MonoBehaviour
     [SerializeField] private PanelManager panelManager;
     [SerializeField] private float TimeToSecondShoot;
     private float TimeFromLastShoot = 0;
+    private int shotForce = 1;
     public bool GameStop;
 
     private void Start()
     {
+        panelManager.OnUpgrateForce += ForceUpgrate;
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.updateRotation = false;
     }
@@ -46,7 +48,7 @@ public class Player : MonoBehaviour
                     if (hit.transform != null) {
                         var zombie = hit.transform.GetComponent<Zombie>();
                         if (zombie != null)
-                            zombie.Kill();
+                            zombie.Kill(shotForce);
                     }
                 to = new Vector3(hit.point.x, from.y, hit.point.z);
             }
@@ -56,17 +58,7 @@ public class Player : MonoBehaviour
             shot.Show(from, to);
             TimeFromLastShoot = 0f;
         }
-
-        //FlashLightTurnOn();
     }
-
-    //private void FlashLightTurnOn()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.F))
-    //    {
-    //        FlashLight.enabled = FlashLight.enabled == true ? false : true;
-    //    }
-    //}
 
     public void GetDamage(int damage)
     {
@@ -76,5 +68,16 @@ public class Player : MonoBehaviour
         {
             panelManager.GameFail();
         }
+    }
+
+    private void OnDestroy()
+    {
+        panelManager.OnUpgrateForce -= ForceUpgrate;
+    }
+
+    void ForceUpgrate()
+    {
+        shotForce = Convert.ToInt32(panelManager.Force.text);
+        Debug.Log(shotForce);
     }
 }
